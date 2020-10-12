@@ -1,0 +1,53 @@
+<div id="signup">
+  <div class="container">
+    <div id="signup-row" class="row justify-content-center align-items-center">
+      <div id="signup-column" class="col-12">
+        <div id="signup-box" class="col-12">
+          <form id="signup-form" [formGroup]="signUpForm" (submit)="signup()">
+            <h3 class="text-center text-info"><i class="fa fa-camera"></i> AluraPic!</h3>
+            <p class="text-center mb-4">Registro</p>
+
+            <div class="form-group">
+              <label for="userName" class="text-info">Nome de Usuário:</label><br>
+              <input type="text" class="form-control" formControlName="userName">
+              <app-validate-input [errorMessage]="'Campo obrigatório'" *ngIf="hasErrors('userName') && getErrors('userName')?.required"></app-validate-input>
+              <app-validate-input [errorMessage]="'Mínimo 3 caracteres'" *ngIf="hasErrors('userName') && getErrors('userName')?.minlength"></app-validate-input>
+              <app-validate-input [errorMessage]="'Máximo 60 caracteres'" *ngIf="hasErrors('userName') && getErrors('userName')?.maxlength"></app-validate-input>
+              <app-validate-input [errorMessage]="'Permitido somente nomes em minúsculo'" *ngIf="hasErrors('userName') && getErrors('userName')?.lowerCase"></app-validate-input>
+              <app-validate-input [errorMessage]="'Usuário já existe'" *ngIf="hasErrors('userName') && getErrors('userName')?.userNameTaken"></app-validate-input>
+            </div>
+
+            <div class="form-group">
+              <label for="fullName" class="text-info">Nome Completo:</label><br>
+              <input type="text" class="form-control" formControlName="fullName">
+              <app-validate-input [errorMessage]="'Campo obrigatório'" *ngIf="hasErrors('fullName') && getErrors('fullName')?.required"></app-validate-input>
+              <app-validate-input [errorMessage]="'Mínimo 3 caracteres'" *ngIf="hasErrors('fullName') && getErrors('fullName')?.minlength"></app-validate-input>
+              <app-validate-input [errorMessage]="'Máximo 60 caracteres'" *ngIf="hasErrors('fullName') && getErrors('fullName')?.maxlength"></app-validate-input>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="text-info">Email:</label><br>
+              <input type="text" class="form-control" formControlName="email">
+              <app-validate-input [errorMessage]="'Campo obrigatório'" *ngIf="hasErrors('email') && getErrors('email')?.required"></app-validate-input>
+              <app-validate-input [errorMessage]="'E-mail inválido'" *ngIf="hasErrors('email') && getErrors('email')?.email"></app-validate-input>
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="text-info">Senha:</label><br>
+              <input type="password" class="form-control" formControlName="password">
+              <app-validate-input [errorMessage]="'Campo obrigatório'" *ngIf="hasErrors('password') && getErrors('password')?.required"></app-validate-input>
+              <app-validate-input [errorMessage]="'Mínimo 6 caracteres'" *ngIf="hasErrors('password') && getErrors('password')?.minlength"></app-validate-input>
+              <app-validate-input [errorMessage]="'Máximo 30 caracteres'" *ngIf="hasErrors('password') && getErrors('password')?.maxlength"></app-validate-input>
+            </div>
+
+            <div class="form-group">
+              Já é usuário? <a [routerLink]="['']" class="text-info">Login</a>
+              <input type="submit" name="submit" class="btn btn-info btn-md pull-right" [disabled]="signUpForm.invalid || signUpForm.pending"
+                value="Registrar">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

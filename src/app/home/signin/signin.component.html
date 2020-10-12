@@ -1,0 +1,40 @@
+<div id="login">
+  <div class="container">
+    <div id="login-row" class="row justify-content-center align-items-center">
+      <div id="login-column" class="col-12">
+        <div id="login-box" class="col-12">
+          <form id="login-form" [formGroup]="loginForm" (submit)="login()">
+            <h3 class="text-center text-info"><i class="fa fa-camera"></i> AluraPic!</h3>
+            <p class="text-center mb-4">Login</p>
+
+            <div class="alert alert-danger" role="alert" *ngIf="invalidCredentials">
+              Login / senha inválidos!
+            </div>
+
+            <div class="alert alert-success" role="alert" *ngIf="authenticated">
+              Autenticado
+            </div>
+
+            <div class="form-group">
+              <label for="username" class="text-info">Usuário:</label><br>
+              <input type="text" class="form-control" formControlName="username" #userNameInput>
+              <app-validate-input [errorMessage]="'Campo obrigatório'" *ngIf="hasErrors('username')">
+              </app-validate-input>
+            </div>
+            <div class="form-group">
+              <label for="password" class="text-info">Senha:</label><br>
+              <input type="password" class="form-control" formControlName="password">
+              <app-validate-input [errorMessage]="'Campo obrigatório'" *ngIf="hasErrors('password')">
+              </app-validate-input>
+            </div>
+            <div class="form-group">
+              <a [routerLink]="['signup']" class="text-info">Registre-se aqui!</a>
+              <input type="submit" name="submit" class="btn btn-info btn-md pull-right" [disabled]="loginForm.invalid"
+                value="Login">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
