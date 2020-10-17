@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { ValidateInputComponent } from './../shared/validate-input/validate-input.component';
+import { CoreModule } from './../core/core.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { SignInComponent } from './signin/signin.component';
@@ -13,7 +13,6 @@ import { SignUpService } from './signup/signup.service';
 @NgModule({
   declarations: [
     SignInComponent,
-    ValidateInputComponent,
     SignUpComponent,
     HomeComponent
   ],
@@ -21,7 +20,8 @@ import { SignUpService } from './signup/signup.service';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    CoreModule
   ],
   providers: [SignUpService]
 })

@@ -1,14 +1,15 @@
-<div class="card">
+<div class="card text-center">
 
-  <img [src]="url" [alt]="description" class="img-thumbnail" />
+  <a [routerLink]="['/photo', id]">
+    <img [src]="url" [alt]="description" class="img-thumbnail" />
+  </a>
 
-  <div class="card-body text-center p-0">
-    <h5 class="card-title mb-0">{{ title }}</h5>
+  <div class="card-body p-0">
     <p class="card-text mb-0">{{ description }}</p>
 
     <div>
-      <i aria-hidden="true" class="fa fa-heart-o fa-1x mr-2"></i>{{ likes }}
-      <i aria-hidden="true" class="fa fa-comment-o fa-1x ml-2 mr-2"></i>{{ comments }}
+      <i appShowIfLogged aria-hidden="true" (click)="like()" class="fa fa-heart-o fa-1x mr-2"></i>{{ likes }} likes
+      <i aria-hidden="true" class="fa fa-comment-o fa-1x ml-2 mr-2"></i>{{ comments }} comentários
     </div>
   </div>
 </div>

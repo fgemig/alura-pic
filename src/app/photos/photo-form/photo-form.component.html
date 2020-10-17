@@ -1,1 +1,53 @@
-<p>photo-form works!</p>
+<div class="container">
+  <form class="row" [formGroup]="formUpload" (submit)="upload()">
+
+    <div class="col-md-6 text-center">
+      <div class="form-group" *ngIf="!preview; else previewImage">
+
+        <button appImmediateClick type="button" (click)="fileInput.click()" class="btn btn-primary">
+          <i class="fa fa-image fa-4x align-middle"></i>
+        </button>
+
+        <input type="file" #fileInput (change)="handleFile($event.target.files[0])" hidden accept="image/*"
+          formControlName="file">
+        <app-validate-input [errorMessage]="'Campo obrigatório'"
+          *ngIf="hasErrors('file') && getErrors('file')?.required">
+        </app-validate-input>
+
+      </div>
+
+      <ng-template #previewImage>
+        <div class="card">
+          <img [src]="preview" alt="preview" class="img-thumbnail" />
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="col-md-6">
+
+      <div class="form-group">
+        <textarea class="form-control form-control-sm" placeholder="photo description"
+          formControlName="description"></textarea>
+        <app-validate-input [errorMessage]="'Campo obrigatório'"
+          *ngIf="hasErrors('description') && getErrors('description')?.required">
+        </app-validate-input>
+        <app-validate-input [errorMessage]="'Máximo de 300 caracteres permitidos'"
+          *ngIf="hasErrors('description') && getErrors('description')?.maxlength">
+        </app-validate-input>
+      </div>
+
+      <div class="form-group">
+        <label class="text-muted">
+          Permitir comentários
+          <input type="checkbox" formControlName="allowComments">
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="formUpload.invalid">
+        Upload
+      </button>
+
+      <a class="btn btn-secondary btn-block">Cancel</a>
+    </div>
+  </form>
+</div>
