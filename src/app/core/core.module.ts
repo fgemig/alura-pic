@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 
 import { ValidateInputComponent } from '../shared/validate-input/validate-input.component';
 import { AlertModule } from './../shared/alert/alert.module';
+import { ShowIfLoggedModule } from './../shared/directives/show-if-logged/show-if-logged.module';
+import { LoadingModule } from './../shared/loading/loading.module';
+import { MenuModule } from './../shared/menu/menu.module';
 import { RequestInterceptor } from './auth/request.interceptor';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
@@ -18,7 +21,10 @@ import { HeaderComponent } from './header/header.component';
   imports: [
     CommonModule,
     RouterModule,
-    AlertModule
+    AlertModule,
+    LoadingModule,
+    MenuModule,
+    ShowIfLoggedModule
   ],
   exports: [
     HeaderComponent,

@@ -1,9 +1,11 @@
-import { UserService } from './../../core/user/user.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { AlertService } from 'src/app/shared/alert/alert.service';
 
+import { UserService } from './../../core/user/user.service';
 import { PhotoService } from './../photo/photo.service';
 
 @Component({
@@ -15,6 +17,7 @@ export class PhotoFormComponent implements OnInit {
   formUpload: FormGroup;
   file: File;
   preview: string;
+  percentDone = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -39,10 +42,17 @@ export class PhotoFormComponent implements OnInit {
 
     this.photoService
       .upload(description, allowComments, this.file)
-      .subscribe(() => {
+      .pipe(finalize(() => {
         this.alertService.success('Foto cadastrada com sucesso!', true);
         this.router.navigate(['/photos/user', this.userService.getUserName()]);
-      });
+      }))
+      .subscribe(
+        (event: HttpEvent<any>) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.percentDone = Math.round(100 * event.loaded / event?.total ?? 1);
+          }
+        },
+        err => this.alertService.danger('Erro durante o upload da foto', true));
   }
 
   handleFile(file: File): void {

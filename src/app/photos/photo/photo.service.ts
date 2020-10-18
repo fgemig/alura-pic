@@ -1,7 +1,7 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { Photo } from './photo';
@@ -17,6 +17,15 @@ export class PhotoService {
   listFromUser(username: string): Observable<Photo[]> {
     return this.http
       .get<Photo[]>(`${environment.apiBaseUrl}/${username}/photos`);
+  }
+
+  listFromUserPaginated(username: string, page: number): Observable<Photo[]> {
+
+    const params = new HttpParams()
+      .append('page', page.toString());
+
+    return this.http
+      .get<Photo[]>(`${environment.apiBaseUrl}/${username}/photos`, { params });
   }
 
   findById(id: number): Observable<Photo> {
@@ -48,15 +57,6 @@ export class PhotoService {
       }));
   }
 
-  listFromUserPaginated(username: string, page: number): Observable<Photo[]> {
-
-    const params = new HttpParams()
-      .append('page', page.toString());
-
-    return this.http
-      .get<Photo[]>(`${environment.apiBaseUrl}/${username}/photos`, { params });
-  }
-
   upload(description: string, allowComments: boolean, file: File): Observable<any> {
 
     const formData = new FormData();
@@ -66,6 +66,11 @@ export class PhotoService {
     formData.append('imageFile', file);
 
     return this.http
-      .post(`${environment.apiBaseUrl}/photos/upload`, formData);
+      .post(`${environment.apiBaseUrl}/photos/upload`,
+        formData,
+        {
+          observe: 'events',
+          reportProgress: true
+        });
   }
 }

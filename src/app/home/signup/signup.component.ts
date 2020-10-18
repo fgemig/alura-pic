@@ -6,6 +6,7 @@ import { lowerCaseValidator } from '../../shared/validators/lower-case.validator
 import { NewUser } from './new-user';
 import { SignUpService } from './signup.service';
 import { UserNotTakenValidatorService } from './user-not-taken.validator.service';
+import { userNamePassword } from './username-password.validator';
 
 @Component({
   templateUrl: './signup.component.html',
@@ -14,6 +15,7 @@ import { UserNotTakenValidatorService } from './user-not-taken.validator.service
 export class SignUpComponent implements OnInit {
 
   signUpForm: FormGroup;
+  isSubmited = false;
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +53,8 @@ export class SignUpComponent implements OnInit {
           Validators.maxLength(30)
         ]
       ],
+    }, {
+      validators: userNamePassword
     });
   }
 
@@ -58,8 +62,7 @@ export class SignUpComponent implements OnInit {
   }
 
   hasErrors(field: string): boolean {
-    return this.signUpForm.get(field).touched
-      && this.signUpForm.get(field).errors != null;
+    return this.isSubmited && this.signUpForm.get(field).errors != null;
   }
 
   getErrors(field: string): ValidationErrors {
@@ -68,14 +71,17 @@ export class SignUpComponent implements OnInit {
 
   signup(): void {
 
-    const newUser = this.signUpForm.getRawValue() as NewUser;
+    this.isSubmited = true;
 
-    this.signupService
-      .signup(newUser)
-      .subscribe(
-        () => this.router.navigate(['']),
-        (err) => console.log(err)
-      );
+    if (!this.signUpForm.invalid && !this.signUpForm.pending) {
+      const newUser = this.signUpForm.getRawValue() as NewUser;
 
+      this.signupService
+        .signup(newUser)
+        .subscribe(
+          () => this.router.navigate(['']),
+          (err) => console.log(err)
+        );
+    }
   }
 }

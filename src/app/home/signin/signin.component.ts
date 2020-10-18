@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from './../../core/auth/auth.service';
 import { PlatformDetectorService } from './../../core/platform/platform-detector.service';
@@ -15,12 +15,14 @@ export class SignInComponent implements OnInit {
   loginForm: FormGroup;
   invalidCredentials = false;
   authenticated = false;
+  fromUrl = '';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private platformDetectorService: PlatformDetectorService) { }
+    private platformDetectorService: PlatformDetectorService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
 
@@ -28,6 +30,9 @@ export class SignInComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
+
+    this.activatedRoute.queryParams
+      .subscribe(params => this.fromUrl = params.fromUrl);
   }
 
   login(): void {
@@ -43,7 +48,10 @@ export class SignInComponent implements OnInit {
           this.authenticated = true;
           this.invalidCredentials = false;
 
-          this.router.navigate(['photos/user', userName]);
+          this.fromUrl !== ''
+            ? this.router.navigateByUrl(this.fromUrl)
+            : this.router.navigate(['photos/user', userName]);
+
         },
         err => {
           this.loginForm.reset();

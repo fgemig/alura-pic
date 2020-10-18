@@ -40,7 +40,7 @@ export class PhotoDetailsComponent implements OnInit {
       .subscribe(
         () => {
           this.alertService.success('Foto excluída!', true);
-          this.router.navigate(['/photos/user', this.userService.getUserName()]);
+          this.router.navigate(['/photos/user', this.userService.getUserName()], { replaceUrl: true });
         },
         (err) => this.alertService.success('Erro ao excluir a foto!')
       );
